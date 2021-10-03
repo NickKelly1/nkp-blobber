@@ -1,17 +1,19 @@
-import { AnimationManager } from './Animator';
-import { Colors } from './Color';
-import { Container } from './Container';
-import { Coordinates } from './Coordinates';
-import { Select } from './Select';
+import { AnimationManager } from './AnimationManager.js';
+import { Colors } from './Color.js';
+import { Container } from './Container.js';
+import { Coordinates } from './Coordinates.js';
+import { Select } from './Select.js';
+import { globalize } from './utils.js';
 
 /**
  * @returns {Container}
  */
 export function boot() {
   const container = new Container();
-  container.set(Select, new Select(container));
-  container.set(Coordinates, new Coordinates(container));
-  container.set(Colors, Colors.create(container));
-  container.set(AnimationManager, new AnimationManager(container));
+  container.set(Select, Select.initialise(container));
+  container.set(Coordinates, Coordinates.initialise(container));
+  container.set(Colors, Colors.initialise(container));
+  container.set(AnimationManager, AnimationManager.initialise(container));
+  globalize('$c', () => container);
   return container;
 }

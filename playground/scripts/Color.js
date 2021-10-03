@@ -25,7 +25,7 @@ import { Select } from './Select.js';
  */
 
 /**
- * @implements {IUpdateable<Colors>}
+ * @implements {IUpdateable<void>}
  * @implements {IColors}
  *
  * Loads colours from css variables
@@ -34,7 +34,9 @@ import { Select } from './Select.js';
  * (haven't verified this actually works)
  */
 export class Colors {
-  static service = true;
+  /** @readonly @type {string} */ static tag = '$colors';
+  /** @readonly @type {boolean} */ static service = true;
+  /** @readonly @type {string} */ tag = Colors.tag;
 
   /**
    * @param {Element} elem
@@ -70,7 +72,7 @@ export class Colors {
 
   /** @protected @type {Container} */ _container;
   /** @protected @type {IColors} */ _values;
-  /** @readonly @type {Publisher<Colors>} */ update$ = new Publisher();
+  /** @readonly @type {Publisher<void>} */ update$ = new Publisher();
 
   /**
    * @param {Container} container
@@ -83,9 +85,20 @@ export class Colors {
 
   /**
    * @param {Container} container
+   * @returns {Colors}
+   */
+  static initialise(container) {
+    const colors = Colors.create(container);
+    colors.watch();
+    return colors;
+  }
+
+  /**
+   * @param {Container} container
    * @param {IColors} values
    */
   constructor(container, values) {
+    this._container = container;
     this._values = values;
   }
 
@@ -107,6 +120,7 @@ export class Colors {
    */
   watch() {
     const mut = new MutationObserver((muts) => {
+      console.debug(`[${this.tag}::watch::MutationObserver] adjusting`);
       /** @type {any} */
       const elem = muts[0].target;
       this._values = Colors.extract(elem);
@@ -118,7 +132,7 @@ export class Colors {
     });
 
     this._values = Colors.extract(this._container.get(Select).colors());
-    this.update$.next(this);
+    this.update$.next();
   }
 
   /**
@@ -126,6 +140,6 @@ export class Colors {
    */
   reload() {
     this._values = Colors.extract(this._container.get(Select).colors());
-    this.update$.next(this);
+    this.update$.next();
   }
 }

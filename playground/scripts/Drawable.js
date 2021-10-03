@@ -12,6 +12,14 @@ export class Drawable extends Disposable {
   /** @type {Publisher<void>} */ update$ = new Publisher();
 
   /**
+   * @param {MouseEvent} evt
+   * @returns {boolean}
+   */
+  onDrag(evt) {
+    return false;
+  }
+
+  /**
    * @abstract
    * @method draw
    * @param {CanvasRenderingContext2D} ctx

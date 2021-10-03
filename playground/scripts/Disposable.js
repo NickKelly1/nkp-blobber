@@ -1,6 +1,5 @@
-/**
- * @typedef {() => void} CleanupFn
- */
+/** @typedef {() => void} CleanupFn */
+
 export class Disposable {
   /** @protected {Set<CleanupFn>} */ _cleaning = new Set();
 
@@ -9,7 +8,7 @@ export class Disposable {
    *
    * Register a function for cleanup
    */
-  onCleanup(fn) {
+  register(fn) {
     this._cleaning.has(fn);
   }
 

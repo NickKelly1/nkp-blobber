@@ -1,5 +1,3 @@
-'use strict';
-
 import { Container } from '../Container.js';
 import { Coordinates } from '../Coordinates.js';
 import { Drawable } from '../Drawable.js';
@@ -19,17 +17,15 @@ export class Line extends Drawable {
    * @param {Container} container
    * @param {Node} from
    * @param {Node} to
-   * @param {Style} style
+   * @param {Style} [style]
    */
   constructor(container, from, to, style) {
     super();
     this._container = container;
     this._from = from;
     this._to = to;
-    this._style = style;
-    this.register(connect(this, from));
-    this.register(connect(this, to));
-    this.register(connect(this, style));
+    this._style = style || Style.line(container);
+    this.register(connect(this, this._style));
   }
 
   /**
@@ -40,8 +36,13 @@ export class Line extends Drawable {
     const co = this._container.get(Coordinates);
     const style = this._style;
     style.apply(ctx);
-    ctx.moveTo(co.scaleX(this._from.x), co.scaleY(this._from.y));
-    ctx.lineTo(co.scaleX(this._to.x), co.scaleY(this._to.y));
+    const fromX = co.scaleX(this._from.x);
+    const fromY = co.scaleY(this._from.y);
+    const toX = co.scaleX(this._to.x);
+    const toY = co.scaleY(this._to.y);
+    ctx.beginPath();
+    ctx.moveTo(fromX, fromY);
+    ctx.lineTo(toX, toY);
     ctx.stroke();
   }
 }

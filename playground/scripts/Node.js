@@ -1,16 +1,21 @@
+/* eslint-disable no-inner-declarations */
 'use strict';
 
-import { Container } from './Container';
-import { Coordinates } from './Coordinates';
-import { Drawable } from './Drawable';
-import { Observable } from './Observable';
-import { Publisher } from './Publisher';
-import { Style } from './Style';
+import { Container } from './Container.js';
+import { Coordinates } from './Coordinates.js';
+import { Drawable } from './Drawable.js';
+import { Observable } from './Observable.js';
+import { Publisher } from './Publisher.js';
+import { Select } from './Select.js';
+import { Style } from './Style.js';
 
 /** @typedef {import('./types').IUpdateable<T>} IUpdateable @template T */
 /** @typedef {import('./types').XY} XY */
 
 export class Node extends Drawable {
+  /** @readonly @type {string} */ static tag = '$node';
+  /** @readonly @type {string} */ get tag() { return Node.tag; }
+
   /** @protected @readonly @type {Container} */ _container;
   /** @protected @readonly @type {Observable<number>} */ _padding;
 
@@ -23,8 +28,8 @@ export class Node extends Drawable {
   /**
    * @param {Container} container
    * @param {XY} xy
-   * @param {Style} style
-   * @param {?Observable<number>} padding
+   * @param {Style} [style]
+   * @param {?Observable<number>} [padding]
    */
   constructor(container, xy, style, padding) {
     super();
@@ -32,8 +37,72 @@ export class Node extends Drawable {
     const { x, y, } = xy;
     this.x = x;
     this.y = y;
-    this.style = style;
-    this._padding = padding || new Observable(5);
+    this.style = style || Style.node(container);
+    this._padding = padding || new Observable(1);
+  }
+
+  /**
+   * @override
+   * @param {MouseEvent} evt
+   */
+  onDrag(evt) {
+    console.log(`[${this.tag}::onDrag] handling drag`);
+    const canvas = this._container.get(Select).canvas();
+    const clickX = evt.pageX - canvas.offsetLeft;
+    const clickY = evt.pageY - canvas.offsetTop;
+    // check bounding box
+    const co = this._container.get(Coordinates);
+    const x = this.x;
+    const y = this.y;
+    const padding = this._padding.get();
+    const left = co.scaleX(x - padding);
+    const right = co.scaleX(x + padding);
+    const top = co.scaleY(y - padding);
+    const bottom = co.scaleY(y + padding);
+    const handle = clickX >= left && clickX <= right && clickY >= top && clickY <= bottom;
+    console.log({
+      clickX,
+      clickY,
+      left,
+      right,
+      top,
+      bottom,
+      handle,
+    });
+    if (!handle) return false;
+    const self = this;
+    const body = this._container.get(Select).body();
+    body.addEventListener('mousemove', handleMouseMove);
+    body.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('blur', handleBlur);
+    return true;
+
+    function shutdown() {
+      const body = self._container.get(Select).body();
+      body.removeEventListener('mousemove', handleMouseMove);
+      body.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('blur', handleBlur);
+    }
+
+    /**
+     * @param {MouseEvent} mouseMoveEvent
+     */
+    function handleMouseMove(mouseMoveEvent) {
+      const moveX = mouseMoveEvent.clientX - canvas.offsetLeft;
+      const moveY = mouseMoveEvent.clientY - canvas.offsetTop;
+      const co = self._container.get(Coordinates);
+      self.set({ x: co.unscaleX(moveX), y: co.unscaleY(moveY), });
+    }
+
+    /** @param {MouseEvent} mouseUpEvent */
+    function handleMouseUp(mouseUpEvent) {
+      shutdown();
+    }
+
+    /** @param {FocusEvent} blurEvent */
+    function handleBlur(blurEvent) {
+      shutdown();
+    }
   }
 
   /**
@@ -42,7 +111,7 @@ export class Node extends Drawable {
   setX(x) {
     this.x = x;
     this.x$.next(x);
-    this.update$.next(this);
+    this.update$.next();
   }
 
   /**
@@ -51,7 +120,7 @@ export class Node extends Drawable {
   setY(y) {
     this.y = y;
     this.y$.next(y);
-    this.update$.next(this);
+    this.update$.next();
   }
 
   /**
@@ -63,7 +132,7 @@ export class Node extends Drawable {
     this.x$.next(x);
     this.y = y;
     this.y$.next(y);
-    this.update$.next(this);
+    this.update$.next();
   }
 
   /**
@@ -77,11 +146,12 @@ export class Node extends Drawable {
     const co = this._container.get(Coordinates);
     if (fillColor) ctx.fillStyle = fillColor;
     if (strokeColor) ctx.strokeStyle = strokeColor;
-    ctx.rect(
-      co.scaleX(this.x - padding),
-      co.scaleY(this.y - padding),
-      co.scaleX(this.x + padding),
-      co.scaleY(this.y + padding),
-    );
+    const x = co.scaleX(this.x - padding);
+    const y = co.scaleY(this.y - padding);
+    const w = co.scaleX(2 * padding);
+    const h = co.scaleY(2 * padding);
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.stroke();
   }
 }

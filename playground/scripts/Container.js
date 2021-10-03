@@ -1,6 +1,7 @@
 /**
  * @exports
  * @typedef {{
+ *  tag?: string;
  *  service: boolean;
  *  name: string;
  *  new(...args: any[]): T;
@@ -9,7 +10,12 @@
  */
 
 export class Container {
-  /** @protected @type {Map<any, any>} */ _services = new Map();
+  /** @protected @readonly @type {Map<ServiceConstructor<any>, any>} */
+  _services = new Map();
+
+  // make services available to browser console
+  /** @protected @readonly @type {any} */
+  t = Object.create(null);
 
   /**
    * @template T
@@ -37,6 +43,7 @@ export class Container {
     if (!Constructor.service) {
       new TypeError(`${Constructor.name} is not a service`);
     }
+    if (Constructor.tag) { this.t[Constructor.tag] = instance; }
     this._services.set(Constructor, instance);
   }
 }

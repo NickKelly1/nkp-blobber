@@ -1,10 +1,18 @@
-'use strict';
-
-import { Container } from './Container';
-import { a, $ } from './utils';
+import { Container } from './Container.js';
+import { a, $ } from './utils.js';
 
 export class Select {
-  static service = true;
+  /**
+   * @param {Container} container
+   * @returns {Select}
+   */
+  static initialise(container) {
+    return new Select(container);
+  }
+
+  /** @readonly @type {string} */ static tag = '$s';
+  /** @readonly @type {boolean} */ static service = true;
+  /** @readonly @type {string} */ tag = Select.tag;
 
   /** @protected @readonly @type {Container} */ _container;
 

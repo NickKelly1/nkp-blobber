@@ -97,12 +97,12 @@ export function connect(self, dependency) {
 }
 
 
-/**
- * @param {IUpdateable<void>} self
- * @param {IUpdateable<void>} dependency
- * @returns {import('./Publisher').Unsubscribe}
- */
-export function disconnect(self, dependency) {
-  dependency.update$.off(self);
-  return dependency.update$.on(() => self.update$.next());
-}
+// /**
+//  * @param {IUpdateable<void>} self
+//  * @param {IUpdateable<void>} dependency
+//  * @returns {import('./Publisher').Unsubscribe}
+//  */
+// export function disconnect(self, dependency) {
+//   dependency.update$.off(self);
+//   return dependency.update$.on(() => self.update$.next());
+// }

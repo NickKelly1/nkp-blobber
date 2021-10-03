@@ -1,21 +1,21 @@
 {
-  "name": "---NPM-PACKAGE---",
+  "name": "@nkp/blobber",
   "sideEffects": false,
   "version": "0.0.1",
-  "description": "---PACKAGE-DESCRIPTION---",
+  "description": "Creates SVG blobbering smooth-curved shapes",
   "main": "cjs/index.js",
   "module": "es/index.js",
   "author": "Nick Kelly",
-  "homepage": "---GITHUB-URL---#readme",
-  "readme": "---GITHUB-URL---#readme",
+  "homepage": "https://github.com/NickKelly1/nkp-blobber#readme",
+  "readme": "https://github.com/NickKelly1/nkp-blobber#readme",
   "license": "Mozilla Public License Version 2.0",
   "private": false,
   "repository": {
     "type": "git",
-    "url": "---GITHUB-URL---"
+    "url": "https://github.com/NickKelly1/nkp-blobber"
   },
   "bugs": {
-    "url": "---GITHUB-URL---/issues"
+    "url": "https://github.com/NickKelly1/nkp-blobber/issues"
   },
   "keywords": [
     "TypeScript",
@@ -32,11 +32,11 @@
     "upgrade": "npm-check --update"
   },
   "devDependencies": {
-    "@jest/types": "^26.6.2",
+    "@jest/types": "^27.2.4",
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^27.0.2",
     "@types/rollup-plugin-peer-deps-external": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^4.28.5",
     "@typescript-eslint/parser": "^4.28.5",
@@ -44,10 +44,10 @@
     "jest": "^27.0.6",
     "npm-check": "^5.9.2",
     "rimraf": "^3.0.2",
+    "rollup": "^2.56.3",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-typescript2": "^0.30.0",
-    "rollup": "^2.56.3",
-    "ts-jest": "^27.0.4",
+    "ts-jest": "^27.0.5",
     "ts-node": "^10.1.0",
     "typescript": "^4.3.5"
   }

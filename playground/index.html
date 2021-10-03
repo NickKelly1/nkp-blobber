@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Svg Playground</title>
+
+
+  <script defer type="module" src="./script.js"></script>
+
+  <!-- fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Courier+Prime&family=Inter&family=Poiret+One&display=swap"
+    rel="stylesheet"
+  >
+</head>
+<body>
+  <header>
+    <h1>
+      Svg Playground
+    </h1>
+  </header>
+  <main>
+    <button id="clear" class="bg-secondary">Clear</button>
+    <button id="ls" class="bg-secondary">Local Storage</button>
+    <!-- form -->
+    <div id="root">
+      <canvas height="100" width="100" id="drawing"></canvas>
+      <!-- <svg id="root" viewBox="0 0 100 100">
+      </svg> -->
+    </div>
+    <section id="controls">
+      <input class="bg-primary" />
+    </section>
+    <section>
+      <pre id="debug">
+        <code></code>
+      </pre>
+    </section>
+  </main>
+  <footer>
+    Copyright Nick Kelly 2021
+  </footer>
+  <!-- placeholder for colors -->
+  <div
+    id="colors"
+    style="
+      display: none;
+      --orange: var(--c-orange);
+      --yellow: var(--c-yellow);
+      --gold: var(--c-gold);
+      --green: var(--c-green);
+      --aqua: var(--c-aqua);
+      --cyan: var(--c-cyan);
+      --blue: var(--c-blue);
+      --purple: var(--c-purple);
+      --magenta: var(--c-magenta);
+      --hot-pink: var(--c-hot-pink);
+      --red: var(--c-red);
+    "
+  ></div>
+</body>
+</html>

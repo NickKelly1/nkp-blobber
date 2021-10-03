@@ -41,7 +41,9 @@ const config = {
     '@typescript-eslint',
   ],
   rules: {
-    'indent': ['error', 2, ],
+    // let ts handle indent
+    // 'indent': ['error', 2, ],
+    indent: ['off',],
     'linebreak-style': ['error', 'unix',],
     'quotes': ['error', 'single',],
     'semi': ['error', 'always',],
@@ -62,6 +64,7 @@ const config = {
     '@typescript-eslint/ban-ts-comment': ['off',],
     '@typescript-eslint/no-non-null-assertion': ['off',],
     '@typescript-eslint/no-this-alias': ['off',],
+    '@typescript-eslint/indent': ['error', 2,],
   },
 };
 
